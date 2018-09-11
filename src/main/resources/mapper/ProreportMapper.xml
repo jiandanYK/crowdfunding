@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.zc.dao.ProreportMapper" >
+  <resultMap id="BaseResultMap" type="com.zhiyou.zc.entity.Proreport" >
+    <id column="r_id" property="rId" jdbcType="INTEGER" />
+    <result column="r_money" property="rMoney" jdbcType="DOUBLE" />
+    <result column="r_type" property="rType" jdbcType="VARCHAR" />
+    <result column="r_text" property="rText" jdbcType="VARCHAR" />
+    <result column="r_max" property="rMax" jdbcType="INTEGER" />
+    <result column="r_time" property="rTime" jdbcType="INTEGER" />
+    <result column="r_num" property="rNum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    r_id, r_money, r_type, r_text, r_max, r_time, r_num
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from proreport
+    where r_id = #{rId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from proreport
+    where r_id = #{rId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiyou.zc.entity.Proreport" >
+    insert into proreport (r_id, r_money, r_type, 
+      r_text, r_max, r_time, 
+      r_num)
+    values (#{rId,jdbcType=INTEGER}, #{rMoney,jdbcType=DOUBLE}, #{rType,jdbcType=VARCHAR}, 
+      #{rText,jdbcType=VARCHAR}, #{rMax,jdbcType=INTEGER}, #{rTime,jdbcType=INTEGER}, 
+      #{rNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiyou.zc.entity.Proreport" >
+    insert into proreport
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        r_id,
+      </if>
+      <if test="rMoney != null" >
+        r_money,
+      </if>
+      <if test="rType != null" >
+        r_type,
+      </if>
+      <if test="rText != null" >
+        r_text,
+      </if>
+      <if test="rMax != null" >
+        r_max,
+      </if>
+      <if test="rTime != null" >
+        r_time,
+      </if>
+      <if test="rNum != null" >
+        r_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="rMoney != null" >
+        #{rMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="rType != null" >
+        #{rType,jdbcType=VARCHAR},
+      </if>
+      <if test="rText != null" >
+        #{rText,jdbcType=VARCHAR},
+      </if>
+      <if test="rMax != null" >
+        #{rMax,jdbcType=INTEGER},
+      </if>
+      <if test="rTime != null" >
+        #{rTime,jdbcType=INTEGER},
+      </if>
+      <if test="rNum != null" >
+        #{rNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiyou.zc.entity.Proreport" >
+    update proreport
+    <set >
+      <if test="rMoney != null" >
+        r_money = #{rMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="rType != null" >
+        r_type = #{rType,jdbcType=VARCHAR},
+      </if>
+      <if test="rText != null" >
+        r_text = #{rText,jdbcType=VARCHAR},
+      </if>
+      <if test="rMax != null" >
+        r_max = #{rMax,jdbcType=INTEGER},
+      </if>
+      <if test="rTime != null" >
+        r_time = #{rTime,jdbcType=INTEGER},
+      </if>
+      <if test="rNum != null" >
+        r_num = #{rNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiyou.zc.entity.Proreport" >
+    update proreport
+    set r_money = #{rMoney,jdbcType=DOUBLE},
+      r_type = #{rType,jdbcType=VARCHAR},
+      r_text = #{rText,jdbcType=VARCHAR},
+      r_max = #{rMax,jdbcType=INTEGER},
+      r_time = #{rTime,jdbcType=INTEGER},
+      r_num = #{rNum,jdbcType=INTEGER}
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getMaxId" resultType="int">
+  select max(r_id) from proreport
+  </select>
+</mapper>

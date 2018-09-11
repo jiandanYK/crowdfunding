@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<!-- 指定驱动jar包的路径 -->
+	<classPathEntry location="D:\RepMaven\mysql\mysql-connector-java\5.1.32\mysql-connector-java-5.1.32.jar"></classPathEntry>
+	
+	<context id="context1">
+		<commentGenerator>
+			<!--去除自动生成注释  -->
+			<property name="suppressAllComments" value="true"></property>
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/crowdfunding"
+			userId="root" password="123456" />
+		<!--生成对应的实体类  -->	
+		<javaModelGenerator targetPackage="com.zhiyou.zc.entity"
+			targetProject="crowdfunding" />
+		<!--类对应的核心映射文件  -->	
+		<sqlMapGenerator targetPackage="com.zhiyou.zc.mapper" targetProject="crowdfunding" />
+		<!--生成的接口  -->
+		<javaClientGenerator targetPackage="com.zhiyou.zc.dao"
+			targetProject="crowdfunding" type="XMLMAPPER" />
+			
+		<table schema="" tableName="proreport" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+	</context>
+</generatorConfiguration>

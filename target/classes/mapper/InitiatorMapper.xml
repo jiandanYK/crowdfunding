@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.zc.dao.InitiatorMapper" >
+  <resultMap id="BaseResultMap" type="com.zhiyou.zc.entity.Initiator" >
+    <id column="i_id" property="iId" jdbcType="VARCHAR" />
+    <result column="i_name" property="iName" jdbcType="VARCHAR" />
+    <result column="i_pid" property="iPid" jdbcType="INTEGER" />
+    <result column="i_phone" property="iPhone" jdbcType="VARCHAR" />
+    <result column="i_pname" property="iPname" jdbcType="VARCHAR" />
+    <result column="i_ptel" property="iPtel" jdbcType="VARCHAR" />
+    <result column="i_address" property="iAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    i_id, i_name, i_pid, i_phone, i_pname, i_ptel, i_address
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from initiator
+    where i_id = #{iId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from initiator
+    where i_id = #{iId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.zhiyou.zc.entity.Initiator" >
+    insert into initiator (i_id, i_name, i_pid, 
+      i_phone, i_pname, i_ptel, 
+      i_address)
+    values (#{iId,jdbcType=VARCHAR}, #{iName,jdbcType=VARCHAR}, #{iPid,jdbcType=INTEGER}, 
+      #{iPhone,jdbcType=VARCHAR}, #{iPname,jdbcType=VARCHAR}, #{iPtel,jdbcType=VARCHAR}, 
+      #{iAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiyou.zc.entity.Initiator" >
+    insert into initiator
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="iId != null" >
+        i_id,
+      </if>
+      <if test="iName != null" >
+        i_name,
+      </if>
+      <if test="iPid != null" >
+        i_pid,
+      </if>
+      <if test="iPhone != null" >
+        i_phone,
+      </if>
+      <if test="iPname != null" >
+        i_pname,
+      </if>
+      <if test="iPtel != null" >
+        i_ptel,
+      </if>
+      <if test="iAddress != null" >
+        i_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="iId != null" >
+        #{iId,jdbcType=VARCHAR},
+      </if>
+      <if test="iName != null" >
+        #{iName,jdbcType=VARCHAR},
+      </if>
+      <if test="iPid != null" >
+        #{iPid,jdbcType=INTEGER},
+      </if>
+      <if test="iPhone != null" >
+        #{iPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="iPname != null" >
+        #{iPname,jdbcType=VARCHAR},
+      </if>
+      <if test="iPtel != null" >
+        #{iPtel,jdbcType=VARCHAR},
+      </if>
+      <if test="iAddress != null" >
+        #{iAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiyou.zc.entity.Initiator" >
+    update initiator
+    <set >
+      <if test="iName != null" >
+        i_name = #{iName,jdbcType=VARCHAR},
+      </if>
+      <if test="iPid != null" >
+        i_pid = #{iPid,jdbcType=INTEGER},
+      </if>
+      <if test="iPhone != null" >
+        i_phone = #{iPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="iPname != null" >
+        i_pname = #{iPname,jdbcType=VARCHAR},
+      </if>
+      <if test="iPtel != null" >
+        i_ptel = #{iPtel,jdbcType=VARCHAR},
+      </if>
+      <if test="iAddress != null" >
+        i_address = #{iAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where i_id = #{iId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiyou.zc.entity.Initiator" >
+    update initiator
+    set i_name = #{iName,jdbcType=VARCHAR},
+      i_pid = #{iPid,jdbcType=INTEGER},
+      i_phone = #{iPhone,jdbcType=VARCHAR},
+      i_pname = #{iPname,jdbcType=VARCHAR},
+      i_ptel = #{iPtel,jdbcType=VARCHAR},
+      i_address = #{iAddress,jdbcType=VARCHAR}
+    where i_id = #{iId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getInitByName" resultMap="BaseResultMap">
+    select 
+   <include refid="Base_Column_List" />
+    from initiator where i_name= #{iName,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.zc.dao.ProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.zhiyou.zc.entity.Project" >
+    <id column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="p_cid" property="pCid" jdbcType="INTEGER" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+    <result column="p_username" property="pUsername" jdbcType="VARCHAR" />
+    <result column="p_did" property="pDid" jdbcType="INTEGER" />
+    <result column="p_rid" property="pRid" jdbcType="INTEGER" />
+    <result column="p_place" property="pPlace" jdbcType="VARCHAR" />
+    <result column="p_money" property="pMoney" jdbcType="DOUBLE" />
+    <result column="p_raise" property="pRaise" jdbcType="DOUBLE" />
+    <result column="p_stime" property="pStime" jdbcType="DATE" />
+    <result column="p_etime" property="pEtime" jdbcType="DATE" />
+    <result column="p_join" property="pJoin" jdbcType="INTEGER" />
+    <result column="p_cover" property="pCover" jdbcType="VARCHAR" />
+    <result column="p_state" property="pState" jdbcType="VARCHAR" />
+    <result column="p_aim" property="pAim" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    p_id, p_cid, p_name, p_username, p_did, p_rid, p_place, p_money, p_raise, p_stime, 
+    p_etime, p_join, p_cover, p_state,p_aim
+  </sql>
+  
+  <!--获取今天的时间  -->
+  <select id="getNowMoney" resultType="double">
+  select SUM(p_raise) from project where TO_DAYS(p_stime)=TO_DAYS(NOW())
+  </select>
+  
+  <!--获取当天新增项目条数  -->
+  <select id="getProCount" resultType="int">
+   select count(p_raise) from project where TO_DAYS(p_stime)=TO_DAYS(NOW())
+  </select>
+  
+  <!--新建映射集  -->
+  <resultMap type="com.zhiyou.zc.entity.Project" id="suibian">
+  <id column="p_id" property="pId" jdbcType="INTEGER" />
+  <result column="p_name" property="pName" jdbcType="VARCHAR" />
+  <result column="p_username" property="pUsername" jdbcType="VARCHAR" />
+  <result column="p_stime" property="pStime" jdbcType="DATE" />
+  <result column="p_aim" property="pAim" jdbcType="VARCHAR" />
+  <result column="miao" property="second" jdbcType="VARCHAR" />
+  </resultMap>
+    
+  <!--获取最新的项目  -->
+  <select id="getNewPro" resultMap="suibian" >
+  select p_id, p_stime, p_aim, p_username, p_name, (UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(p_stime)) miao from project order
+   by p_id desc limit 0,5 
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="ProjectClass" parameterType="java.lang.Integer" >
+    select *
+   <!--  <include refid="Base_Column_List" /> -->
+    from project p,proClass c 
+    where p.p_id = #{pId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 通过发起人姓名找到项目 -->
+  <select id="getProByName" resultMap="BaseResultMap" parameterType="String">
+  select * from project where p_username=#{pUsername,jdbcType=VARCHAR}  
+  </select>
+  
+  <!--筛选项目的状态  -->
+  <select id="getProByState1" resultMap="BaseResultMap" parameterType="String">
+  select * from project where p_username=#{pUsername,jdbcType=VARCHAR} and p_state='众筹中' 
+  </select> 
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project
+    where p_id = #{pId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiyou.zc.entity.Project" >
+    insert into project (p_id, p_cid, p_name, 
+      p_username, p_did, p_rid, 
+      p_place, p_money, p_raise, 
+      p_stime, p_etime, p_join, p_cover, 
+      p_state, p_aim)
+    values (#{pId,jdbcType=INTEGER}, #{pCid,jdbcType=INTEGER}, #{pName,jdbcType=VARCHAR}, 
+      #{pUsername,jdbcType=VARCHAR}, #{pDid,jdbcType=INTEGER}, #{pRid,jdbcType=INTEGER}, 
+      #{pPlace,jdbcType=VARCHAR}, #{pMoney,jdbcType=DOUBLE}, #{pRaise,jdbcType=DOUBLE}, 
+      #{pStime,jdbcType=DATE}, #{pEtime,jdbcType=DATE}, #{pJoin,jdbcType=INTEGER}, #{pCover,jdbcType=VARCHAR}, 
+      #{pState,jdbcType=VARCHAR}, #{pAim,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiyou.zc.entity.Project" >
+    insert into project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="pCid != null" >
+        p_cid,
+      </if>
+      <if test="pName != null" >
+        p_name,
+      </if>
+      <if test="pUsername != null" >
+        p_username,
+      </if>
+      <if test="pDid != null" >
+        p_did,
+      </if>
+      <if test="pRid != null" >
+        p_rid,
+      </if>
+      <if test="pPlace != null" >
+        p_place,
+      </if>
+      <if test="pMoney != null" >
+        p_money,
+      </if>
+      <if test="pRaise != null" >
+        p_raise,
+      </if>
+      <if test="pStime != null" >
+        p_stime,
+      </if>
+      <if test="pEtime != null" >
+        p_etime,
+      </if>
+      <if test="pJoin != null" >
+        p_join,
+      </if>
+      <if test="pCover != null" >
+        p_cover,
+      </if>
+      <if test="pState != null" >
+        p_state,
+      </if>
+      <if test="pAim != null" >
+        p_aim,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="pCid != null" >
+        #{pCid,jdbcType=INTEGER},
+      </if>
+      <if test="pName != null" >
+        #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pUsername != null" >
+        #{pUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="pDid != null" >
+        #{pDid,jdbcType=INTEGER},
+      </if>
+      <if test="pRid != null" >
+        #{pRid,jdbcType=INTEGER},
+      </if>
+      <if test="pPlace != null" >
+        #{pPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="pMoney != null" >
+        #{pMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="pRaise != null" >
+        #{pRaise,jdbcType=DOUBLE},
+      </if>
+      <if test="pStime != null" >
+        #{pStime},
+      </if>
+      <if test="pEtime != null" >
+        #{pEtime,jdbcType=DATE},
+      </if>
+      <if test="pJoin != null" >
+        #{pJoin,jdbcType=INTEGER},
+      </if>
+      <if test="pCover != null" >
+        #{pCover,jdbcType=VARCHAR},
+      </if>
+      <if test="pState != null" >
+        #{pState,jdbcType=VARCHAR},
+      </if>
+      <if test="pAim != null" >
+        #{pAim,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiyou.zc.entity.Project" >
+    update project
+    <set >
+      <if test="pCid != null" >
+        p_cid = #{pCid,jdbcType=INTEGER},
+      </if>
+      <if test="pName != null" >
+        p_name = #{pName,jdbcType=VARCHAR},
+      </if>
+      <if test="pUsername != null" >
+        p_username = #{pUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="pDid != null" >
+        p_did = #{pDid,jdbcType=INTEGER},
+      </if>
+      <if test="pRid != null" >
+        p_rid = #{pRid,jdbcType=INTEGER},
+      </if>
+      <if test="pPlace != null" >
+        p_place = #{pPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="pMoney != null" >
+        p_money = #{pMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="pRaise != null" >
+        p_raise = #{pRaise,jdbcType=DOUBLE},
+      </if>
+      <if test="pStime != null" >
+        p_stime = #{pStime},
+      </if>
+      <if test="pEtime != null" >
+        p_etime = #{pEtime,jdbcType=DATE},
+      </if>
+      <if test="pJoin != null" >
+        p_join = #{pJoin,jdbcType=INTEGER},
+      </if>
+      <if test="pCover != null" >
+        p_cover = #{pCover,jdbcType=VARCHAR},
+      </if>
+      <if test="pState != null" >
+        p_state = #{pState,jdbcType=VARCHAR},
+      </if>
+      <if test="pAim != null" >
+        p_aim = #{pState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiyou.zc.entity.Project" >
+    update project
+    set p_cid = #{pCid,jdbcType=INTEGER},
+      p_name = #{pName,jdbcType=VARCHAR},
+      p_username = #{pUsername,jdbcType=VARCHAR},
+      p_did = #{pDid,jdbcType=INTEGER},
+      p_rid = #{pRid,jdbcType=INTEGER},
+      p_place = #{pPlace,jdbcType=VARCHAR},
+      p_money = #{pMoney,jdbcType=DOUBLE},
+      p_raise = #{pRaise,jdbcType=DOUBLE},
+      p_stime = #{pStime,jdbcType=DATE},
+      p_etime = #{pEtime,jdbcType=DATE},
+      p_join = #{pJoin,jdbcType=INTEGER},
+      p_cover = #{pCover,jdbcType=VARCHAR},
+      p_state = #{pState,jdbcType=VARCHAR},
+      p_aim = #{pAim,jdbcType=VARCHAR}
+    where p_id = #{pId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getPage" resultType="int">
+  select count(*) from project
+  </select>
+  
+  <select id="getSelectPage" resultMap="ProjectClass" parameterType="map">
+    select * from project p,proClass c
+    <where>
+    p.p_cid=c.c_id  
+    <if test="pName!=null">
+	and p.p_name like concat(concat("%",#{pName}),"%")
+	</if>
+	<if test="pUsername!=null">
+    and p.p_username like concat(concat("%",#{pUsername}),"%")
+	</if>
+	<if test="pState!=null">
+    and p.p_state like concat(concat("%",#{pState}),"%")
+	</if>
+	<if test="cName!=null">
+    and c.c_name like concat(concat("%",#{cName}),"%")
+	</if>
+	
+  </where> 
+     limit #{startRow},3   
+  </select>
+  
+  <!--联合查询  -->
+   <resultMap id="ProjectClass" type="com.zhiyou.zc.entity.Project" >
+    <id column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="p_cid" property="pCid" jdbcType="INTEGER" />
+    <result column="p_name" property="pName" jdbcType="VARCHAR" />
+    <result column="p_username" property="pUsername" jdbcType="VARCHAR" />
+    <result column="p_did" property="pDid" jdbcType="INTEGER" />
+    <result column="p_rid" property="pRid" jdbcType="INTEGER" />
+    <result column="p_place" property="pPlace" jdbcType="VARCHAR" />
+    <result column="p_money" property="pMoney" jdbcType="DOUBLE" />
+    <result column="p_raise" property="pRaise" jdbcType="DOUBLE" />
+    <result column="p_stime" property="pStime" jdbcType="DATE" />
+    <result column="p_etime" property="pEtime" jdbcType="DATE" />
+    <result column="p_join" property="pJoin" jdbcType="INTEGER" />
+    <result column="p_cover" property="pCover" jdbcType="VARCHAR" />
+    <result column="p_state" property="pState" jdbcType="VARCHAR" />
+    <result column="p_aim" property="pAim" jdbcType="VARCHAR" />
+    
+    <association property="proclass" javaType="com.zhiyou.zc.entity.Proclass" >
+    
+    <id column="c_id" property="cId" jdbcType="INTEGER" />
+    <result column="c_name" property="cName" jdbcType="VARCHAR" />
+    <result column="c_desc" property="cDesc" jdbcType="VARCHAR" />
+    <result column="c_time" property="cTime" jdbcType="DATE" />
+    <result column="c_state" property="cState" jdbcType="INTEGER" />  
+    </association>
+  </resultMap>
+  
+  <select id="getMaxId" resultType="int">
+  select max(p_id) from project
+  </select>
+  
+  <!--查询所有的project  -->
+  <select id="getProAll" resultMap="BaseResultMap">
+  select * from project
+  </select>
+  
+  <!-- 查询所有即将发起的项目 -->
+  <select id="getProByState" resultMap="ProjectClass" >  
+  select * from project p,proClass c where p.p_state='即将开始'
+  </select>
+  
+  <!-- 前台分页模糊查询 -->
+  <select id="getPage1" resultType="int">
+  select count(*) from project p,proClass c where  p.p_cid=c.c_id 
+  </select>
+  
+  <select id="getSelectPage1" resultMap="ProjectClass" parameterType="String">
+    select * from project p,proClass c
+    <where>
+    p.p_cid=c.c_id  
+	<if test="pState!=null">
+    and p.p_state like concat(concat("%",#{pState}),"%")
+	</if>
+	<if test="cName!=null">
+    and c.c_name like concat(concat("%",#{cName}),"%")
+	</if>	
+  </where> 
+     limit #{startRow},12  
+  </select>
+  
+  <select id="getStuPro"  resultMap="ProjectClass">
+  select * from project p,proClass c where p.p_cid=c.c_id and c.c_name='教育助学'
+  </select>
+</mapper>

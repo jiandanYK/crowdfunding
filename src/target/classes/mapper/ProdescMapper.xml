@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhiyou.zc.dao.ProdescMapper" >
+  <resultMap id="BaseResultMap" type="com.zhiyou.zc.entity.Prodesc" >
+    <id column="d_id" property="dId" jdbcType="INTEGER" />
+    <result column="d_view" property="dView" jdbcType="VARCHAR" />
+    <result column="d_story" property="dStory" jdbcType="VARCHAR" />
+    <result column="d_support" property="dSupport" jdbcType="VARCHAR" />
+    <result column="d_info" property="dInfo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    d_id, d_view, d_story, d_support, d_info
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from prodesc
+    where d_id = #{dId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from prodesc
+    where d_id = #{dId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zhiyou.zc.entity.Prodesc" >
+    insert into prodesc (d_id, d_view, d_story, 
+      d_support, d_info)
+    values (#{dId,jdbcType=INTEGER}, #{dView,jdbcType=VARCHAR}, #{dStory,jdbcType=VARCHAR}, 
+      #{dSupport,jdbcType=VARCHAR}, #{dInfo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhiyou.zc.entity.Prodesc" >
+    insert into prodesc
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dId != null" >
+        d_id,
+      </if>
+      <if test="dView != null" >
+        d_view,
+      </if>
+      <if test="dStory != null" >
+        d_story,
+      </if>
+      <if test="dSupport != null" >
+        d_support,
+      </if>
+      <if test="dInfo != null" >
+        d_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dId != null" >
+        #{dId,jdbcType=INTEGER},
+      </if>
+      <if test="dView != null" >
+        #{dView,jdbcType=VARCHAR},
+      </if>
+      <if test="dStory != null" >
+        #{dStory,jdbcType=VARCHAR},
+      </if>
+      <if test="dSupport != null" >
+        #{dSupport,jdbcType=VARCHAR},
+      </if>
+      <if test="dInfo != null" >
+        #{dInfo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhiyou.zc.entity.Prodesc" >
+    update prodesc
+    <set >
+      <if test="dView != null" >
+        d_view = #{dView,jdbcType=VARCHAR},
+      </if>
+      <if test="dStory != null" >
+        d_story = #{dStory,jdbcType=VARCHAR},
+      </if>
+      <if test="dSupport != null" >
+        d_support = #{dSupport,jdbcType=VARCHAR},
+      </if>
+      <if test="dInfo != null" >
+        d_info = #{dInfo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where d_id = #{dId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhiyou.zc.entity.Prodesc" >
+    update prodesc
+    set d_view = #{dView,jdbcType=VARCHAR},
+      d_story = #{dStory,jdbcType=VARCHAR},
+      d_support = #{dSupport,jdbcType=VARCHAR},
+      d_info = #{dInfo,jdbcType=VARCHAR}
+    where d_id = #{dId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getMaxId" resultType="int">
+  select max(d_id) from prodesc
+  </select>
+</mapper>
